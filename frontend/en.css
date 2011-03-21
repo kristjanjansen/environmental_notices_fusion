@@ -1,0 +1,79 @@
+html { 
+  height: 100%;
+}
+body { 
+  height: 100%; 
+  margin: 0px; 
+  padding: 0px; 
+  font-family: Arial, Helvetica, "Helvetica Neue", sans-serif;
+  font-size: 12px;  
+}
+a, a:link, a:visited, a:hover {
+  color: #ff3333;
+  text-decoration: none;
+  font-weight: bold;
+}
+p {
+  color: #333;
+  margin: 0 0 2px 0;
+}
+#map { 
+  height: 100%
+}
+#overlay {
+  width: 295px;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background: white;
+  padding: 15px;
+  -moz-box-shadow: 0px 0px 5px #000;
+  -webkit-box-shadow: 0px 0px 5px #000;
+  box-shadow: 0px 0px 5px #000;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  color: #777;
+  float: right;
+}
+h2 {
+  margin: 0;
+}
+.logo {
+  float: left;
+}
+.intro {
+  font-size: 14px;
+  line-height: 18px;
+  margin-bottom: 5px;
+  color: #333;
+  clear: both;
+}
+#form-address {
+  font-weight: bold; 
+  color: #333;
+}
+#form-search {
+  font-weight: bold; 
+  color: white;
+  background: #ff3333;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  padding: 0.5em 1em;
+  border: 0;
+}
+.footer {
+  margin-top: 12px;
+  font-size: 12px;
+  color: gray;
+}
