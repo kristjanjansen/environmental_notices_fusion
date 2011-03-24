@@ -3,6 +3,7 @@ Backend for Environmental Notices
 Disclaimer:
 My first ever Python code...
 
+Google fusion table samples copied here also, changed those with the unicode CSV file reader to be on a safe side.
 
 Dependencies:
 * Python 2.7 and other dependencies listed in
