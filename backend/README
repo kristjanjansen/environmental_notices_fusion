@@ -1,1 +1,21 @@
-Here's where to put backend code
+Backend for Environmental Notices
+
+Disclaimer:
+My first ever Python code...
+
+
+Dependencies:
+* Python 2.7 and other dependencies listed in
+    http://code.google.com/p/fusion-tables-client-python/source/browse/trunk/README :
+    - python-oauth2 library: http://github.com/simplegeo/python-oauth2
+    - python-oauth2 dependency, httplib2: http://code.google.com/p/httplib2/
+
+* Beautiful Soup http://www.crummy.com/software/BeautifulSoup/
+* http://www.geonames.org/export/geonames-search.html username
+* Probably something else... 
+
+Running:
+* "scraper.py" fetches, parses and geotags the data to a csv file, change it to configure the period and number of records
+* "insert_scraped_csv.py" inserts the data to fusion table, id can be set in the file, uses client login that is google account
+
+
