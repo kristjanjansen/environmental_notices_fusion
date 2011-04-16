@@ -12,13 +12,13 @@ if __name__ == "__main__":
 
     import sys, getpass
     username = sys.argv[1]
-    password = getpass.getpass("Enter your password: ")
+    password = sys.argv[2]
   
     token = ClientLogin().authorize(username, password)
     ft_client = ftclient.ClientLoginFTClient(token)
    
     #import a table from CSV file
-    tableid = 561593
+    tableid = 644334
     CSVImporter(ft_client).importMoreRows("datafile.csv", tableid)
     print tableid
   
