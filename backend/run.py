@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from authorization.clientlogin import ClientLogin
+from sql.sqlbuilder import SQL
+import ftclient
+from fileimport.fileimporter import CSVImporter
+from scraper import *
+
+DATAFILE_NAME = 'data/datafile.csv'
+TABLE_ID = 561593
+
+if __name__ == "__main__":
+
+    import sys, getpass
+    if len(sys.argv) < 2:
+        print "Usage: run.py <geonamesuser> <googleaccount> <googlepass> "
+        sys.exit()
+   
+    scraper = Scraper(1, 10, 'data/datafile.csv')
+    scraper.geonames_user = sys.argv[1]
+    scraper.scrape_and_look_for_next_link(scraper.url, 1)
+
+    username = sys.argv[2]
+    password = sys.argv[3]
+    
+    token = ClientLogin().authorize(username, password)
+    ft_client = ftclient.ClientLoginFTClient(token)
+   
+    #import a table from CSV file
+    tableid = TABLE_ID
+    CSVImporter(ft_client).importMoreRows(DATAFILE_NAME, tableid)
+    print tableid
+
