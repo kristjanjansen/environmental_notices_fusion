@@ -8,7 +8,11 @@ from fileimport.fileimporter import CSVImporter
 from scraper import *
 
 DATAFILE_NAME = 'data/datafile.csv'
-TABLE_ID = 561593
+
+DAYS_IN_PAST = 1
+MAX_ITEMS = 30 #50-60 should be enough for a day
+
+DEST_FT_TABLE_ID = 561593
 
 if __name__ == "__main__":
 
@@ -17,7 +21,7 @@ if __name__ == "__main__":
         print "Usage: run.py <geonamesuser> <googleaccount> <googlepass> "
         sys.exit()
    
-    scraper = Scraper(1, 10, 'data/datafile.csv')
+    scraper = Scraper(DAYS_IN_PAST, MAX_ITEMS, 'data/datafile.csv')
     scraper.geonames_user = sys.argv[1]
     scraper.scrape_and_look_for_next_link(scraper.url, 1)
 
@@ -28,7 +32,7 @@ if __name__ == "__main__":
     ft_client = ftclient.ClientLoginFTClient(token)
    
     #import a table from CSV file
-    tableid = TABLE_ID
+    tableid = DEST_FT_TABLE_ID
     CSVImporter(ft_client).importMoreRows(DATAFILE_NAME, tableid)
     print tableid
 

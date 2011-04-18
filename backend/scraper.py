@@ -7,19 +7,18 @@ import csv
 import cgi
 import random
 import cStringIO
+import logging
+import logging.config
 
 from datetime import date, timedelta, datetime
 from BeautifulSoup import BeautifulSoup, Tag, NavigableString
 
 # Must be set
-GEONAMES_USERNAME = ''
+INDEX_URL = "http://www.ametlikudteadaanded.ee/"
+DATAFILE_NAME = 'data/datafile.csv'
+MAX_ITEMS = 30
 
-index_url = "http://www.ametlikudteadaanded.ee/"
-datafile_name = 'datafile.csv'
-
-#url = 'http://www.ametlikudteadaanded.ee/index.php?act=1&salguskpvavald=20.01.2011&sloppkpvavald=27.02.2011&steateliigid=170178;170212;170213;170177;170176;170162;170163;170207;170208;'
-
-categories = [
+CATEGORIES = [
     u'Kaevandused ja maardlad', 
     u'Hooned ja ehitised', 
     u'Teede ehitusega seotud tegevus',
@@ -30,7 +29,7 @@ categories = [
     u'Jäätmetega seotud teade', 
     u'Saasteloaga seotud teade']
 
-categories_keywords = [
+CATEGORIES_KEYWORDS = [
     [u'lubjakivi', 'maardla', u'karjäär', 'maavara', 'kaevandamise', 'kaevandamine', u'mäeeraldis'],
     [u'ehitusõigus', 'hoonestustingimus', 'kruntideks jaotamine', 'elamu'],
     [u'maanteeamet'],
@@ -42,7 +41,7 @@ categories_keywords = [
     [u'saasteloa']  
     ]
 
-at_types = {
+AT_TYPES = {
     "580082": "Geneetiliselt muundatud organismide keskkonda viimise teated",
     "170163": "Geoloogilise uuringu loa taotlemisteated",
     "170162": "Geoloogilise uuringu load",
@@ -67,6 +66,8 @@ at_types = {
     "301252": "Veemajanduskava kinnitamise teade",
 }
 
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger('scraper')
 
 class UnicodeWriter:
     """
@@ -99,8 +100,18 @@ class UnicodeWriter:
 
 class Scraper:
     
-    url = ""
+    #the main AT url
+    index_url = ''
+    #current scraping url
+    url = ''    
+    #the number of max items to retrieve, limits the recursion occasionally/purposedly
+    max_items = ''    
+    #filename where to write the current scraping result
+    filename = ''
     
+    #geonames account
+    genames_user = ''
+
     def geo_term_extract(self, desc):
         data = values ={
                  'maxRows':'1',
@@ -108,7 +119,7 @@ class Scraper:
                  'country':'EE',
                  'featureClass':'P',
                  'operator':'OR',
-                 'username':GEONAMES_USERNAME,
+                 'username':self.geonames_user,
                  'q':desc.encode('utf-8')}
         data=urllib.urlencode(values)
     
@@ -140,8 +151,8 @@ class Scraper:
     def assign_category(self, desc):
         cat = ''
         id = 0
-        for i, row in enumerate(categories):
-            for item in categories_keywords[i]:     
+        for i, row in enumerate(CATEGORIES):
+            for item in CATEGORIES_KEYWORDS[i]:     
                 if desc.find(item) > 0:
                     cat = row
                     id = i+1
@@ -152,9 +163,15 @@ class Scraper:
 
 
     def scrape_table(self, soup):
-        data_table = soup.findAll("table", { "width" : "100%" })[4]
-        rows = data_table.findAll("tr")
-        csvfile = open(datafile_name, 'a')
+        try:
+            data_table = soup.findAll("table", { "width" : "100%" })[4]
+            rows = data_table.findAll("tr")
+        except:
+            rows = []            
+            self.url = ''
+            logger.warning("Content not found")
+            
+        csvfile = open(self.filename, 'a')
         csvwriter = UnicodeWriter(csvfile)
 
         record = {}
@@ -164,16 +181,18 @@ class Scraper:
                 if table_cells[0]['width']:
                     if table_cells[0]['width'] != "35":
                         #print table_cells
-                        link = index_url + table_cells[2].find("a")['href']
-                        record['ID'] = link[22 + len(index_url):len(link)]
+                        link = self.index_url + table_cells[2].find("a")['href']
+                        record['ID'] = link[22 + len(self.index_url):len(link)]
                         record['Date'] = table_cells[0].text[6:len(table_cells[0].text)]
                         record['Type'] = cgi.escape(table_cells[1].text)
                         desc_row_cells = rows[i+1].findAll("td")
                         desc = desc_row_cells[0]
-                        #print desc_row_cells
-                                        
+
                         a = desc.renderContents()
                         a = a.decode("utf-8")
+                        if a.startswith(u'<br />'):
+                            a = a[7:len(a)]
+
                         record['Description'] = a # desc.text #desc.text[0:100]
 
                         geo = self.geo_term_extract(desc.text)
@@ -192,24 +211,29 @@ class Scraper:
         csvfile.close()
 
 
-
     def scrape_and_look_for_next_link(self, link, start):
-    #    if (start == 1):
-    #        link = link + "&srange=" + str(start) + "-" + str(start + 9)
-        print link
 
-        if (start < 100):
+        if (start < self.max_items):
+            logger.info(link)            
             html = urllib.urlopen(link)
             soup = BeautifulSoup(html)
             #print soup.prettify()
             self.scrape_table(soup)
             start = start + 10
-            next_link = self.url + "&srange=" + str(start) + "-" + str(start + 9)
-            self.scrape_and_look_for_next_link(next_link, start)
+            if self.url != '':
+                next_link = self.url + "&srange=" + str(start) + "-" + str(start + 9)
+                self.scrape_and_look_for_next_link(next_link, start)
+            else:
+                logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
+        else:
+            logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
 
-    def init(self, filename, days_past):
+    def __init__(self, days_past=1, max_items=10, filename=DATAFILE_NAME, index_url = INDEX_URL):
         header = ['Id', 'Date', 'Type', 'Description', 'Geometry', 'Category', 'CategoryId', 'Lat', 'Lng']
-        datafile = open(filename, 'w')
+        self.filename = filename
+        self.index_url = index_url
+        self.max_items = max_items
+        datafile = open(self.filename, 'w')        
         writer = UnicodeWriter(datafile)
         writer.writerow(header)
         datafile.close()
@@ -218,14 +242,13 @@ class Scraper:
         s_date = d_yesterday = d_today - timedelta(days = days_past)
         e_date = d_yesterday = d_today - timedelta(days = 1)
     
-        self.url = u"http://www.ametlikudteadaanded.ee/index.php?act=1"
+        self.url = self.index_url + u"index.php?act=1"
         self.url = self.url + "&salguskpvavald=" + s_date.strftime("%d.%m.%Y") + "&sloppkpvavald=" + e_date.strftime("%d.%m.%Y")
-        self.url = self.url + "&steateliigid=" + ";".join(at_types.keys())
-        return self.url
-
-
-scraper = Scraper()
-scraper.init(datafile_name, 1)
-scraper.scrape_and_look_for_next_link(scraper.url, 1)
+        self.url = self.url + "&steateliigid=" + ";".join(AT_TYPES.keys())
+        
+# How to run
+#scraper = Scraper(1, 10)
+#scraper.geonames_user = GEONAMES_USERNAME
+#scraper.scrape_and_look_for_next_link(scraper.url, 1)
 
 
