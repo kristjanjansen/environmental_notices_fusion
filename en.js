@@ -1,7 +1,7 @@
 var map;
 var lastWindow;
 
-var tableid = 509622;
+var tableid = 831071;
 var center_lat = 58.58;
 var center_lon = 25.1;
 var zoom = 7;

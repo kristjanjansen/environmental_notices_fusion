@@ -12,7 +12,7 @@ DATAFILE_NAME = 'data/datafile.csv'
 DAYS_IN_PAST = 1
 MAX_ITEMS = 30 #50-60 should be enough for a day
 
-DEST_FT_TABLE_ID = 561593
+DEST_FT_TABLE_ID = 831071
 
 if __name__ == "__main__":
 
