@@ -7,15 +7,16 @@ import csv
 import cgi
 import random
 import cStringIO
-import logging
-import logging.config
+import os
+# import logging
+# import logging.config
 
 from datetime import date, timedelta, datetime
 from BeautifulSoup import BeautifulSoup, Tag, NavigableString
 
 # Must be set
 INDEX_URL = "http://www.ametlikudteadaanded.ee/"
-DATAFILE_NAME = 'data/datafile.csv'
+DATAFILE_NAME = os.path.join(os.path.dirname(__file__), 'data/datafile.csv')
 MAX_ITEMS = 30
 
 CATEGORIES = [
@@ -66,8 +67,8 @@ AT_TYPES = {
     "301252": "Veemajanduskava kinnitamise teade",
 }
 
-logging.config.fileConfig('logging.conf')
-logger = logging.getLogger('scraper')
+# logging.config.fileConfig('logging.conf')
+# logger = logging.getLogger('scraper')
 
 class UnicodeWriter:
     """
@@ -169,7 +170,7 @@ class Scraper:
         except:
             rows = []            
             self.url = ''
-            logger.warning("Content not found")
+            # logger.warning("Content not found")
             
         csvfile = open(self.filename, 'a')
         csvwriter = UnicodeWriter(csvfile)
@@ -214,7 +215,7 @@ class Scraper:
     def scrape_and_look_for_next_link(self, link, start):
 
         if (start < self.max_items):
-            logger.info(link)            
+            # logger.info(link)            
             html = urllib.urlopen(link)
             soup = BeautifulSoup(html)
             #print soup.prettify()
@@ -223,10 +224,10 @@ class Scraper:
             if self.url != '':
                 next_link = self.url + "&srange=" + str(start) + "-" + str(start + 9)
                 self.scrape_and_look_for_next_link(next_link, start)
-            else:
-                logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
-        else:
-            logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
+            #else:
+                # logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
+        #else:
+            # logger.info("Exiting at: " + str(start - 10) +'-'+ str(start - 1))
 
     def __init__(self, days_past=1, max_items=10, filename=DATAFILE_NAME, index_url = INDEX_URL):
         header = ['Id', 'Date', 'Type', 'Description', 'Geometry', 'Category', 'CategoryId', 'Lat', 'Lng']
