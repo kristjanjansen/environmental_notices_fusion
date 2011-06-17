@@ -147,9 +147,9 @@ function drawMarkers(row) {
       markersArray.push(marker);
       
       google.maps.event.addListener(marker, 'click', function(event) {
-
+        date = new Date.parse(row[1].toString().substring(0, 15)).toString('d.M.yyyy'); 
         content = 
-           "<h2>" + row[5] + "</h2>" +
+           "<h2>" + row[5] + " " + date + "</h2>" +
            "<div class='description'>" + row[3].substring(0, 325) + "...</div>" +
            "<a href='http://www.ametlikudteadaanded.ee/index.php?act=1&teade="  + 
            row[0] + 
