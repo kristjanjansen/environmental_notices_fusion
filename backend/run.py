@@ -11,7 +11,7 @@ import os
 DATAFILE_NAME = os.path.join(os.path.dirname(__file__), 'data/datafile.csv')
 
 DAYS_IN_PAST = 1
-MAX_ITEMS = 30 #50-60 should be enough for a day
+MAX_ITEMS = 100 #50-60 should be enough for a day
 
 DEST_FT_TABLE_ID = 1011748
 
