@@ -1,7 +1,7 @@
 var map;
 var lastWindow;
 
-var tableid = 831071;
+var tableid = 1011748;
 var center_lat = 58.58;
 var center_lon = 25.1;
 var zoom = 7;
@@ -49,7 +49,7 @@ function initialize() {
 }
 
 function getDataAll() {
-  query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent("SELECT id, date, type, description, geometry, category, lat, lon FROM " + tableid));
+  query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent("SELECT Id, Date, Type, Description, Geometry, Category, Lat, Lng FROM " + tableid));
   query.send(prepareData);
   map.setCenter(center);
   map.setZoom(zoom);
@@ -73,7 +73,7 @@ function getDataAddress() {
       
       clearMarkers();
       
-      query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent("SELECT id, date, type, description, geometry, category, lat, lon FROM " + tableid + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG" + location_address + "," + radius + "))"));
+      query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq=' + encodeURIComponent("SELECT Id, Date, Type, Description, Geometry, Category, Lat, Lng FROM " + tableid + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG" + location_address + "," + radius + "))"));
       query.send(prepareData);
       
       map.setCenter(location_address);
