@@ -5,8 +5,8 @@
 It's assumed that you have virtualenv and Foreman installed.
 
 ```
-git clone https://github.com/kristjanjansen/scraper
-cd scraper
+git clone https://github.com/kristjanjansen/environmental_notices
+cd environmental_notices
 virtualenv venv --distribute
 source venv/bin/activate
 pip install -r requirements.txt
