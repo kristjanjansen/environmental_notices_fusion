@@ -16,9 +16,9 @@ from pprint import pprint
 DATAFILE_NAME = os.path.join(os.path.dirname(__file__), 'datafile.csv')
 
 DAYS_IN_PAST = 20
-MAX_ITEMS = 5 #50-60 should be enough for a day
+MAX_ITEMS = 50 #50-60 should be enough for a day
 
-DEST_FT_TABLE_ID = 1011748
+DEST_FT_TABLE_ID = os.environ['GOOGLE_FUSION_ID']
 
 
 if __name__ == "__main__":
