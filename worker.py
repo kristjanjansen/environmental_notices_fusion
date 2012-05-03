@@ -15,8 +15,8 @@ from pprint import pprint
 
 DATAFILE_NAME = os.path.join(os.path.dirname(__file__), 'datafile.csv')
 
-DAYS_IN_PAST = 20
-MAX_ITEMS = 50 #50-60 should be enough for a day
+DAYS_IN_PAST = 31
+MAX_ITEMS = 100
 
 DEST_FT_TABLE_ID = os.environ['GOOGLE_FUSION_ID']
 
@@ -38,5 +38,6 @@ if __name__ == "__main__":
     token = ClientLogin().authorize(username, password)
     ft_client = ClientLoginFTClient(token)
     tableid = DEST_FT_TABLE_ID
+    print ft_client.query('DELETE FROM ' + tableid + ';');    
     CSVImporter(ft_client).importMoreRows(DATAFILE_NAME, tableid)
     print tableid
