@@ -1,1 +1,4 @@
-backend/run.sh
+venv
+*.pyc
+.env
+datafile.csv
