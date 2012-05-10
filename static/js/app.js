@@ -3,7 +3,7 @@ $(document).ready(function() {
  
   var tableid = 0;
   
-  $.getJSON('config/config.json', function(data) {
+  $.getJSON('config.json', function(data) {
      tableid = data.GOOGLE_FUSION_ID;
      initialize(tableid);
   });

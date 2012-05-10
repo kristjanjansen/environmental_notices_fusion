@@ -11,7 +11,7 @@ def index():
 
 # Populating frontend conf file with environment variables
 
-@app.route('/config/config.json')
+@app.route('/config.json')
 def conf():
     return jsonify(GOOGLE_FUSION_ID=os.environ['GOOGLE_FUSION_ID']);
     
