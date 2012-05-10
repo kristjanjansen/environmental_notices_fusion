@@ -44,24 +44,11 @@ foreman start worker
 
 Alternatively you can add required config vars to ```~/.bashrc``` and run ```python worker.py``` , more information here: http://devcenter.heroku.com/articles/config-vars
 
-### Frontend
+Then run
 
-Run
 ```
 foreman start web
 ```
-
-You can also run the frontend statically. First, create ```static/config.json``` file:
-
-```
-{
- "GOOGLE_FUSION_ID": your_google_fusion_table_id,
- "GOOGLE_ANALYTICS_ID": your_google_analytics_id 
-}
-```
-
-Then open ```static/index.html``` in web browser
-
 
 ## Run in Heroku
 
