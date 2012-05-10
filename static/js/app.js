@@ -1,8 +1,11 @@
 
 $(document).ready(function() {
  
-   $.getJSON('config.json', function(data) {
-     initialize(data.GOOGLE_FUSION_ID);
+  var tableid = 0;
+  
+  $.getJSON('config.json', function(data) {
+     tableid = data.GOOGLE_FUSION_ID;
+     initialize(tableid);
   });
   
   
@@ -11,11 +14,11 @@ $(document).ready(function() {
   });
 
   $('#form-select, #form-search').change(function() {
-    getDataAddress();
+    getDataAddress(tableid);
   });
 
   $('#form-search').click(function() {
-    getDataAddress();
+    getDataAddress(tableid);
   });
 
     
@@ -79,7 +82,7 @@ function reset() {
   circle.setMap();
 }
 
-function getDataAddress() {
+function getDataAddress(tableid) {
 
   var geocoder = new google.maps.Geocoder();
   var new_radius = document.getElementById("form-select").value;
@@ -199,8 +202,8 @@ function clearMarkers() {
 }
 
 window.onkeypress = enterSubmit;
-function enterSubmit() {
+function enterSubmit(tableid) {
   if(event.keyCode==13) {
-    getDataAddress();
+    getDataAddress(tableid);
   }
 }
