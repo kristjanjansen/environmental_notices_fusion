@@ -35,8 +35,6 @@ GOOGLE_ANALYTICS_ID=your_google_analytics_id
 
 ## Run Locally
 
-### Backend
-
 Run
 ```
 foreman start worker
