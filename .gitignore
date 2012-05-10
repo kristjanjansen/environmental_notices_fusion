@@ -2,3 +2,4 @@ venv
 *.pyc
 .env
 datafile.csv
+.DS_Store

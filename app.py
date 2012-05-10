@@ -1,4 +1,4 @@
-from flask import Flask, redirect, jsonify
+from flask import Flask, redirect, render_template, jsonify
 import os
 
 app = Flask(__name__)
@@ -7,11 +7,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return redirect('static/index.html');
+    return render_template('index.html');
 
 # Populating frontend conf file with environment variables
 
-@app.route('/static/config.json')
+@app.route('/config/config.json')
 def conf():
     return jsonify(GOOGLE_FUSION_ID=os.environ['GOOGLE_FUSION_ID']);
     

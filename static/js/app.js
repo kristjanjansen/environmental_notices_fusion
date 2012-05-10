@@ -3,7 +3,7 @@ $(document).ready(function() {
  
   var tableid = 0;
   
-  $.getJSON('config.json', function(data) {
+  $.getJSON('config/config.json', function(data) {
      tableid = data.GOOGLE_FUSION_ID;
      initialize(tableid);
   });
@@ -131,27 +131,27 @@ function prepareData(response) {
       styles: [
       {
         height: 53,
-        url: "images/marker_53x53.png",
+        url: "static/images/marker_53x53.png",
         width: 53
       },
       {
         height: 56,
-        url: "images/marker_56x56.png",
+        url: "static/images/marker_56x56.png",
         width: 56
       },
       {
         height: 66,
-        url: "images/marker_66x66.png",
+        url: "static/images/marker_66x66.png",
         width: 66
       },
       {
         height: 78,
-        url: "images/marker_78x78.png",
+        url: "static/images/marker_78x78.png",
         width: 78
       },
       {
         height: 90,
-        url: "images/marker_90x90.png",
+        url: "static/images/marker_90x90.png",
         width: 90
       },      
       ]
@@ -166,7 +166,7 @@ function drawMarkers(row) {
       var marker = new google.maps.Marker({
           map: map, 
           position: marker_coordinate,
-          icon: new google.maps.MarkerImage("images/marker_16x16.png"),
+          icon: new google.maps.MarkerImage("static/images/marker_16x16.png"),
           zIndex: 1
       });
         
