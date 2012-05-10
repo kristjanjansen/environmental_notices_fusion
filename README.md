@@ -1,6 +1,8 @@
-## Set up config values:
+## About 
 
-### Installing
+Here's the code powering the public service http://keskkonnateated.ee
+
+## Installing
 
 It's assumed that you have virtualenv and Foreman installed.
 
@@ -12,7 +14,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Configuration
+## Configuration
 
 Create environment file
 ```
@@ -31,9 +33,9 @@ GOOGLE_ANALYTICS_ID=your_google_analytics_id
 (Analytics ID is optional)
 
 
-### Run Locally
+## Run Locally
 
-#### Backend
+### Backend
 
 Run
 ```
@@ -42,7 +44,7 @@ foreman start worker
 
 Alternatively you can add required config vars to ```~/.bashrc``` and run ```python worker.py``` , more information here: http://devcenter.heroku.com/articles/config-vars
 
-#### Frontend
+### Frontend
 
 Run
 ```
@@ -61,7 +63,7 @@ You can also run the frontend statically. First, create ```static/config.json```
 Then open ```static/index.html``` in web browser
 
 
-### Run in Heroku
+## Run in Heroku
 
 First deploy http://devcenter.heroku.com/articles/python#deploy_to_herokucedar and set up config:
 
